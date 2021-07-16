@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ContentRepository::class)
+ * @ORM\Table(name="`con_content`")
  */
 class Content
 {
@@ -18,39 +19,45 @@ class Content
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="con_title", type="string", length=255)
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="con_text", type="string", length=255)
      */
     private $text;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="con_rating", type="integer", nullable=true)
      */
     private $rating;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name="con_date_start", type="datetime", nullable=true)
      */
     private $dateStart;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name="con_date_end", type="datetime", nullable=true)
      */
     private $dateEnd;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="con_created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="con_icon", type="string", length=255, nullable=true)
      */
     private $icon;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="contents")
+     * @ORM\JoinColumn(name="cat_categorie_id", referencedColumnName="id" ,nullable=false)
+     */
+    private $categorie;
 
     public function getId(): ?int
     {
@@ -137,6 +144,18 @@ class Content
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }
