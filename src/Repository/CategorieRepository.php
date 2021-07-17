@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Categorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use http\QueryString;
 
 /**
  * @method Categorie|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +19,32 @@ class CategorieRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Categorie::class);
+    }
+
+    /**
+     * @param $user
+     * @return int|mixed|string
+     */
+    public function findPersonalCategorie($user)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $user)
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param $user
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function personalCatFormType($user): ?QueryBuilder
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $user)
+            ->orderBy('c.id', 'DESC');
     }
 
     // /**

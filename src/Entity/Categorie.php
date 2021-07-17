@@ -30,6 +30,17 @@ class Categorie
      */
     private $contents;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="categories")
+     * @ORM\JoinColumn(name="cat_user_id", referencedColumnName="id" ,nullable=false)
+     */
+    private $user;
+
+    public function __toString()
+    {
+        return $this->title;
+    }
+
     public function __construct()
     {
         $this->contents = new ArrayCollection();
@@ -78,6 +89,18 @@ class Categorie
                 $content->setCategorie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

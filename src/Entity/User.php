@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -134,9 +136,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $lastlogin;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Categorie::class, mappedBy="user")
+     */
+    private $categories;
+
+    public function __toString()
+    {
+        return $this->getUsername();
+    }
+
     public function __construct()
     {
         $this->roles = ['ROLE_USER'];
+        $this->categories = new ArrayCollection();
     }
 
 
@@ -445,6 +458,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastlogin(?string $lastlogin): self
     {
         $this->lastlogin = $lastlogin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Categorie[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categorie $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categorie $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getUser() === $this) {
+                $category->setUser(null);
+            }
+        }
 
         return $this;
     }

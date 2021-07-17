@@ -55,9 +55,14 @@ class Content
 
     /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="contents")
-     * @ORM\JoinColumn(name="cat_categorie_id", referencedColumnName="id" ,nullable=false)
+     * @ORM\JoinColumn(name="con_categorie_id", referencedColumnName="id" ,nullable=false)
      */
     private $categorie;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
