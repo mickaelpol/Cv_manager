@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Categorie</th>
                 <th>Title</th>
                 <th>Text</th>
                 <th>Rating</th>
@@ -23,6 +24,7 @@
         {% for content in contents %}
             <tr>
                 <td>{{ content.id }}</td>
+                <td>{{ content.categorie }}</td>
                 <td>{{ content.title }}</td>
                 <td>{{ content.text }}</td>
                 <td>{{ content.rating }}</td>
@@ -31,8 +33,8 @@
                 <td>{{ content.createdAt ? content.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ content.icon }}</td>
                 <td>
-                    <a href="{{ path('content_show', {'id': content.id}) }}">show</a>
-                    <a href="{{ path('content_edit', {'id': content.id}) }}">edit</a>
+                    <a href="{{ path('app_content_show', {'id': content.id}) }}">show</a>
+                    <a href="{{ path('app_content_edit', {'id': content.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -43,5 +45,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('content_new') }}">Create new</a>
+    <a href="{{ path('app_content_new') }}">Create new</a>
 {% endblock %}

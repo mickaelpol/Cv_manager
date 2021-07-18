@@ -1,20 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ user }}! ✅</h1>
+    <div>
+        <h1>Accueil</h1>
+        <h2>Créer vos CV dynamique</h2>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/private/cv_manager/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/private/cv_manager/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
-</div>
+        <a href="{{ path('app_categorie_new') }}">Ajouter une compétences</a>
+        <a href="{{ path('app_content_new') }}">Ajouter du contenu</a>
+
+
+        <h3>Compétences</h3>
+        {% for categorie in categories %}
+            <h2>{{ categorie.title }}</h2>
+            {% for content in categorie.contents %}
+                {{ dump(content) }}
+            {% endfor %}
+
+        {% endfor %}
+        <h3>Contenu</h3>
+
+    </div>
+
 {% endblock %}

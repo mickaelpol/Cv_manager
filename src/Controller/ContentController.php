@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-#[Route('/content')]
+#[Route('/content', name: 'app_content_')]
 class ContentController extends AbstractController
 {
 
@@ -20,7 +20,7 @@ class ContentController extends AbstractController
         return throw new AccessDeniedException();
     }
 
-    #[Route('/', name: 'content_index', methods: ['GET'])]
+    #[Route('/', name: 'index', methods: ['GET'])]
     public function index(ContentRepository $contentRepository): Response
     {
         return $this->render('content/index.html.twig', [
@@ -28,7 +28,7 @@ class ContentController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'content_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $options = ['user' => $this->getUser()];
@@ -41,16 +41,16 @@ class ContentController extends AbstractController
             $entityManager->persist($content);
             $entityManager->flush();
 
-            return $this->redirectToRoute('content_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_content_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('content/new.html.twig', [
             'content' => $content,
-            'form' => $form,
+            'form'    => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'content_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
     public function show(Content $content): Response
     {
         return $this->render('content/show.html.twig', [
@@ -58,7 +58,7 @@ class ContentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'content_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Content $content): Response
     {
         $form = $this->createForm(ContentType::class, $content);
@@ -72,14 +72,14 @@ class ContentController extends AbstractController
 
         return $this->renderForm('content/edit.html.twig', [
             'content' => $content,
-            'form' => $form,
+            'form'    => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'content_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'delete', methods: ['POST'])]
     public function delete(Request $request, Content $content): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$content->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $content->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($content);
             $entityManager->flush();

@@ -24,7 +24,7 @@ class Content
     private $title;
 
     /**
-     * @ORM\Column(name="con_text", type="string", length=255)
+     * @ORM\Column(name="con_text", type="text")
      */
     private $text;
 

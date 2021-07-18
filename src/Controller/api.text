@@ -1,0 +1,49 @@
+Code pour la création de l'api pour récuperer les données des categorie et leur contenu  :
+
+$data = $categorieRepository->findPersonalCategorie($user);
+
+$categorie = ['categorie' => []];
+
+        foreach ($data as $key => $value) {
+            $id = $value->getId();
+            $title = $value->getTitle();
+
+            $contenu = [];
+
+            foreach ($value->getContents() as $k => $v) {
+                $conId = $v->getId();
+                $contitle = $v->getTitle();
+                $conText = $v->getText();
+                $conRating = $v->getRating();
+                $conDateStart = $v->getDateStart();
+                $conDateEnd = $v->getDateEnd();
+                $conCreatedAt = $v->getCreatedAt();
+                $conIcon = $v->getIcon();
+                $conCategorie = $v->getCategorie();
+
+                // Récupération des contenu par categorie
+                $contenues = [
+                    'id'         => $conId,
+                    'title'      => $contitle,
+                    'text'       => $conText,
+                    'rating'     => $conRating,
+                    'date_start' => $conDateStart,
+                    'date_end'   => $conDateEnd,
+                    'created_at' => $conCreatedAt,
+                    'icon'       => $conIcon,
+                    'categorie'  => $conCategorie,
+                ];
+                array_push($contenu, $contenues);
+            }
+            // Création du tableau Json descategorie avec leur contenus
+            $categories = [
+                'id'    => $id,
+                'title' => $title,
+                'contenu' => $contenu
+            ];
+            array_push($categorie['categorie'], $categories);
+        }
+
+        $response = new JsonResponse($categorie);
+        $response->headers->set('Content-Type', 'application/json; charset=UTF-8');
+        return ($response);
