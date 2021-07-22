@@ -6,6 +6,7 @@ use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CategorieRepository::class)
@@ -17,22 +18,26 @@ class Categorie
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @groups("cat:read")
      */
     private $id;
 
     /**
      * @ORM\Column(name="cat_title", type="string", length=255)
+     * @groups("cat:read")
      */
     private $title;
 
     /**
      * @ORM\OneToMany(targetEntity=Content::class, mappedBy="categorie")
+     * @groups("cat:read")
      */
     private $contents;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="categories")
      * @ORM\JoinColumn(name="cat_user_id", referencedColumnName="id" ,nullable=false)
+     * @groups("cat:read")
      */
     private $user;
 

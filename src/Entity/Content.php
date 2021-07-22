@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ContentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ContentRepository::class)
@@ -15,41 +16,49 @@ class Content
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @groups("cat:read")
      */
     private $id;
 
     /**
      * @ORM\Column(name="con_title", type="string", length=255)
+     * @groups("cat:read")
      */
     private $title;
 
     /**
      * @ORM\Column(name="con_text", type="text")
+     * @groups("cat:read")
      */
     private $text;
 
     /**
      * @ORM\Column(name="con_rating", type="integer", nullable=true)
+     * @groups("cat:read")
      */
     private $rating;
 
     /**
      * @ORM\Column(name="con_date_start", type="datetime", nullable=true)
+     * @groups("cat:read")
      */
     private $dateStart;
 
     /**
      * @ORM\Column(name="con_date_end", type="datetime", nullable=true)
+     * @groups("cat:read")
      */
     private $dateEnd;
 
     /**
      * @ORM\Column(name="con_created_at", type="datetime")
+     * @groups("cat:read")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(name="con_icon", type="string", length=255, nullable=true)
+     * @groups("cat:read")
      */
     private $icon;
 
