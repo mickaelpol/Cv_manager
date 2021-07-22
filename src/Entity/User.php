@@ -141,6 +141,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $categories;
 
+    
+
     public function __toString()
     {
         return $this->getUsername();
