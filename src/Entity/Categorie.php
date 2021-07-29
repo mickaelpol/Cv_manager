@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CategorieRepository::class)
@@ -24,6 +25,7 @@ class Categorie
 
     /**
      * @ORM\Column(name="cat_title", type="string", length=255)
+     * @Assert\NotBlank()
      * @groups("cat:read")
      */
     private $title;
@@ -31,6 +33,7 @@ class Categorie
     /**
      * @ORM\OneToMany(targetEntity=Content::class, mappedBy="categorie")
      * @groups("cat:read")
+     * @ORM\OrderBy({"createdAt" = "DESC", "id" = "DESC"})
      */
     private $contents;
 

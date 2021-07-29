@@ -37,9 +37,13 @@ class CategorieController extends AbstractController
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
+        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
         $categorie = new Categorie();
         $user = $this->getUser();
-        $form = $this->createForm(CategorieType::class, $categorie);
+        $form = $this->createForm(CategorieType::class, $categorie, [
+            "method" => "POST",
+            "action" => $this->generateUrl("app_categorie_new"),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -47,14 +51,20 @@ class CategorieController extends AbstractController
             $user->addCategory($categorie);
             $entityManager->persist($categorie);
             $entityManager->flush();
+            if ($request->isXmlHttpRequest()) {
+                return new Response(null, 204);
+            }
 
-            return $this->redirectToRoute('app_categorie_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('categorie/new.html.twig', [
+        return $this->render('categorie/' . $template, [
             'categorie' => $categorie,
-            'form'      => $form,
-        ]);
+            'form'      => $form->createView(),
+        ], new Response(
+            null,
+            $form->isSubmitted() && !$form->isValid() ? 422 : 200,
+        ));
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]

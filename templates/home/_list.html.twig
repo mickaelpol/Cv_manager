@@ -1,0 +1,86 @@
+<div class="row mt-5">
+    {% for categorie in categories %}
+        {% set icon =  '<i class="bi bi-star-fill"></i>' %}
+        <div class="col-12 col-sm-12">
+            <div class="card mt-2">
+                <div class="card-header text-center">
+                    {{ categorie.title }}
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-start">
+                        {% for content in categorie.contents %}
+                            <div class=" col-12 col-sm-6 mt-2">
+                                <div class="card">
+                                    <div class="position-relative">
+                                        <div
+                                                {{ stimulus_controller('modal-form', {
+                                                    formUrl: path('app_content_delete', {'id': content.id})
+                                                }) }}
+                                                data-action="hidden.bs.modal->modal-form#modalHidden"
+                                        >
+                                            {{ include('content/delete_content_button.html.twig') }}
+                                            {{ include('_delete_modal.html.twig', {
+                                                modalTitle: 'Supprimer ' ~ content.title,
+                                            }) }}
+                                        </div>
+                                        <div
+                                                {{ stimulus_controller('modal-form', {
+                                                    formUrl: path('app_content_edit', {'id': content.id})
+                                                }) }}
+                                                data-action="hidden.bs.modal->modal-form#modalHidden"
+                                        >
+                                            {{ include('content/edit_content_button.html.twig') }}
+                                            {{ include('_modal.html.twig', {
+                                                modalTitle: 'Editer' ~ content.id,
+                                            }) }}
+                                        </div>
+                                    </div>
+                                    <img src="" class="card-img-top mt-5" alt="">
+                                    <h5 class="card-title text-center">
+                                        {{ content.title }}
+                                    </h5>
+                                    <div class="card-body">
+                                        <div class="card-text text-center">
+                                            {{ content.text|u.truncate(25, '...', true) }}
+                                            <div class="row mt-2">
+                                                <div class="col-12">
+                                                    {% for i in 1..content.rating %}
+                                                        {{ icon|raw }}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="text-center mt-2">
+                                                        Début <br>
+                                                        <span class="badge rounded-pill bg-success text-dark">
+                                                                {{ content.dateStart|date('d/m/Y') }}
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="text-center mt-2">
+                                                        Fin <br>
+                                                        <span class="badge rounded-pill bg-danger text-dark">
+                                                                {{ content.dateEnd|date('d/m/Y') }}
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 mt-2">
+                                                    Créer le : <span
+                                                            class="badge rounded-pill bg-info text-dark">{{ content.createdAt|date('d/m/Y') }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

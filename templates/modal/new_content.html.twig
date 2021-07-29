@@ -1,0 +1,16 @@
+{% block body %}
+    <div
+            {{ stimulus_controller('modal-form', {
+                formUrl: path('app_content_new')
+            }) }}
+            data-action="hidden.bs.modal->modal-form#modalHidden"
+            class="col"
+    >
+        {{ include('button/contentButton.html.twig') }}
+
+        {{ include('_modal.html.twig', {
+            modalTitle: 'Ajouter du contenu',
+        }) }}
+    </div>
+
+{% endblock %}

@@ -30,7 +30,7 @@ class CategorieRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :val')
             ->setParameter('val', $user)
-            ->orderBy('c.id', 'DESC')
+            ->orderBy('c.id', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -44,7 +44,7 @@ class CategorieRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :val')
             ->setParameter('val', $user)
-            ->orderBy('c.id', 'DESC');
+            ->orderBy('c.id', 'ASC');
     }
 
     // /**

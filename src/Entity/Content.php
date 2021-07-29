@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ContentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ContentRepository::class)
@@ -23,18 +24,25 @@ class Content
     /**
      * @ORM\Column(name="con_title", type="string", length=255)
      * @groups("cat:read")
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @ORM\Column(name="con_text", type="text")
      * @groups("cat:read")
+     * @Assert\NotBlank()
      */
     private $text;
 
     /**
      * @ORM\Column(name="con_rating", type="integer", nullable=true)
      * @groups("cat:read")
+     * @Assert\Range(
+     *     min="0",
+     *     max="10",
+     *     notInRangeMessage="La note doit être comprise entre 0 et 10"
+     * )
      */
     private $rating;
 
@@ -45,13 +53,13 @@ class Content
     private $dateStart;
 
     /**
-     * @ORM\Column(name="con_date_end", type="datetime", nullable=true)
+     * @ORM\Column(name="con_date_end", type="date", nullable=true)
      * @groups("cat:read")
      */
     private $dateEnd;
 
     /**
-     * @ORM\Column(name="con_created_at", type="datetime")
+     * @ORM\Column(name="con_created_at", type="date")
      * @groups("cat:read")
      */
     private $createdAt;

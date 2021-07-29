@@ -1,4 +1,139 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row mt-5">
+        {{ form_start(form) }}
+        <div class="row">
+            {# Partie titre #}
+            <div class="col-6">
+                {% if not form.title.vars.valid %}
+
+                    {% for error in form.title.vars.errors %}
+                        <div class="text-danger">
+                            {{ error.message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {{ form_label(form.title,  "Titre : ") }}
+                <div class='mt10 input'>
+                    {{ form_widget(form.title, { 'attr' : {'class': 'form-control'} }) }}
+                </div>
+                {% do  form.title.setRendered %}
+            </div>
+            {# Partie date début #}
+            <div class="col-6">
+                <div class="col-12">
+                    {% if not form.dateStart.vars.valid %}
+
+                        {% for error in form.dateStart.vars.errors %}
+                            <div class="text-danger">
+                                {{ error.message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form_label(form.dateStart,  "Date de début : ") }}
+                    <div class="input-group">
+                        {{ form_widget(form.dateStart, { 'attr' : {'class': 'form-control js-datepicker'} }) }}
+                        <div class="input-group-addon">
+                            <span class="input-group-text"><i class="bi-calendar"></i></span>
+                        </div>
+                    </div>
+                    {% do  form.dateStart.setRendered %}
+                </div>
+                {# Partie date de fin #}
+                <div class="col-12">
+                    {% if not form.dateEnd.vars.valid %}
+
+                        {% for error in form.dateEnd.vars.errors %}
+                            <div class="text-danger">
+                                {{ error.message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form_label(form.dateEnd,  "Date de fin : ") }}
+                    <div class="input-group">
+                        {{ form_widget(form.dateEnd, { 'attr' : {'class': 'form-control js-datepicker'} }) }}
+                        <div class="input-group-addon">
+                            <span class="input-group-text"><i class="bi-calendar"></i></span>
+                        </div>
+                    </div>
+                    {% do  form.dateEnd.setRendered %}
+                </div>
+            </div>
+            {# Partie image upload #}
+            <div class="col-6">
+                {% if not form.icon.vars.valid %}
+
+                    {% for error in form.icon.vars.errors %}
+                        <div class="text-danger">
+                            {{ error.message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {{ form_label(form.icon,  "Image : ") }}
+                <div class='mt10 input'>
+                    {{ form_widget(form.icon, { 'attr' : {'class': 'form-control'} }) }}
+                </div>
+                {% do  form.icon.setRendered %}
+            </div>
+            {# Partie Categorie #}
+            <div class="col-6">
+                {% if not form.categorie.vars.valid %}
+
+                    {% for error in form.categorie.vars.errors %}
+                        <div class="text-danger">
+                            {{ error.message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {{ form_label(form.categorie,  "Categorie : ") }}
+                <div class='mt10 input'>
+                    {{ form_widget(form.categorie, { 'attr' : {'class': 'form-control'} }) }}
+                </div>
+                {% do  form.categorie.setRendered %}
+            </div>
+            {# Partie Description #}
+            <div class="col-12">
+                {% if not form.text.vars.valid %}
+
+                    {% for error in form.text.vars.errors %}
+                        <div class="text-danger">
+                            {{ error.message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {{ form_label(form.text,  "Description : ") }}
+                <div class='mt10 input'>
+                    {{ form_widget(form.text, { 'attr' : {'class': 'form-control'} }) }}
+                </div>
+                {% do  form.text.setRendered %}
+            </div>
+            {# Partie Rating #}
+            <div class="col-6">
+                {% if not form.rating.vars.valid %}
+
+                    {% for error in form.rating.vars.errors %}
+                        <div class="text-danger">
+                            {{ error.message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {{ form_label(form.rating,  "Note : ") }}
+                <div class='mt10 input'>
+                    {{ form_widget(form.rating, { 'attr' : {'class': ''} }) }}
+                </div>
+                {% do  form.rating.setRendered %}
+            </div>
+        </div>
+
+        <button class="btn">{{ button_label|default('Save') }}</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -31,23 +31,36 @@ class ContentController extends AbstractController
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
-        $options = ['user' => $this->getUser()];
+        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
+        $options = [
+            'user' => $this->getUser(),
+            "method" => "POST",
+            "action" => $this->generateUrl("app_content_new"),
+        ];
         $content = new Content();
         $form = $this->createForm(ContentType::class, $content, $options);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
             $entityManager->persist($content);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_content_index', [], Response::HTTP_SEE_OTHER);
+            if ($request->isXmlHttpRequest()) {
+                return new Response(null, 204);
+            }
+
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('content/new.html.twig', [
+        return $this->render('content/' . $template, [
             'content' => $content,
-            'form'    => $form,
-        ]);
+            'form'    => $form->createView(),
+        ], new Response(
+            null,
+            $form->isSubmitted() && !$form->isValid() ? 422 : 200,
+        ));
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]
@@ -61,19 +74,30 @@ class ContentController extends AbstractController
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Content $content): Response
     {
-        $form = $this->createForm(ContentType::class, $content);
+        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'edit.html.twig';
+        $options = [
+            'user' => $this->getUser()
+        ];
+        $form = $this->createForm(ContentType::class, $content, $options);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('content_index', [], Response::HTTP_SEE_OTHER);
+            if ($request->isXmlHttpRequest()) {
+                return new Response(null, 204);
+            }
+
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('content/edit.html.twig', [
+        return $this->render('content/' . $template, [
             'content' => $content,
-            'form'    => $form,
-        ]);
+            'form'    => $form->createView(),
+        ], new Response(
+            null,
+            $form->isSubmitted() && !$form->isValid() ? 422 : 200,
+        ));
     }
 
     #[Route('/{id}', name: 'delete', methods: ['POST'])]
@@ -85,6 +109,10 @@ class ContentController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('content_index', [], Response::HTTP_SEE_OTHER);
+        if ($request->isXmlHttpRequest()) {
+            return new Response(null, 204);
+        }
+
+        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
 }

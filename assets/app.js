@@ -7,10 +7,11 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
+import jquery from 'jquery';
+import { Tooltip, Toast, Popover } from "bootstrap";
 
 // start the Stimulus application
 import './bootstrap';
+import $ from "jquery";
 require('bootstrap-icons/font/bootstrap-icons.css');
-import bsCustomFileInput from 'bs-custom-file-input';
 
-console.log('hello Webpack')

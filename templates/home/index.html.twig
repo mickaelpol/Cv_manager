@@ -4,77 +4,28 @@
 
 {% block body %}
 
+    <div
+            data-action="modal-form:success->reload-content#refreshContent"
+            {{ stimulus_controller('reload-content', {
+                url: path('app_home', { ajax: 1 })
+            }) }}
+    >
+        <div class="row mt-2">
+            <div class="col">
+                <h1 class="text-center">Accueil</h1>
+                <h2 class="text-center mt-5">Créer vos CV dynamique</h2>
+            </div>
+        </div>
 
-    <div class="row mt-2">
-        <div class="col">
-            <h1 class="text-center">Accueil</h1>
-            <h2 class="text-center mt-5">Créer vos CV dynamique</h2>
+        <div class="row mt-5">
+            {{ include('modal/new_cateogie.html.twig') }}
+            {{ include('modal/new_content.html.twig') }}
+        </div>
+
+        <div data-reload-content-target="content">
+            {{ include('home/_list.html.twig') }}
         </div>
     </div>
 
-    <div class="row mt-5">
-        <div class="col">
-            <a class="btn btn-outline-success" href="{{ path('app_categorie_new') }}">Ajouter une catégorie</a>
-            <a class="btn btn-outline-success" href="{{ path('app_content_new') }}">Ajouter du contenu</a>
-        </div>
-    </div>
-
-    <div class="row mt-5">
-        {% for categorie in categories %}
-            {% set icon =  '<i class="bi bi-star-fill"></i>' %}
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header text-center">
-                            catégorie {{ categorie.id }}
-                        </div>
-                        <div class="card-body">
-                            <div class="row align-items-start">
-                                {% for content in categorie.contents %}
-                                    <div class="col-6 mt-2">
-                                        <div class="card">
-                                            <img src="" class="card-img-top" alt="">
-                                            <h5 class="card-title text-center">
-                                                {{ content.title }}
-                                            </h5>
-                                            <div class="card-body">
-                                                <div class="card-text text-center">
-                                                    {{ content.text|u.truncate(40, '...', true) }}
-                                                    <div class="row mt-2">
-                                                        <div class="col-12">
-                                                            {% for i in 1..content.rating %}
-                                                                {{ icon|raw }}
-                                                            {% endfor %}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <div class="text-center mt-2">
-                                                                Début <br>
-                                                                {{ content.dateStart|date('d/m/Y') }}
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="text-center mt-2">
-                                                                Fin <br>
-                                                                {{ content.dateEnd|date('d/m/Y') }}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col mt-2">
-                                                            Créer le : <span class="badge rounded-pill bg-info text-dark">{{ content.createdAt|date('d/m/Y') }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        {% endfor %}
-    </div>
 
 {% endblock %}

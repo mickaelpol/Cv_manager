@@ -1,0 +1,16 @@
+{% block body %}
+    <div
+            {{ stimulus_controller('modal-form', {
+                formUrl: path('app_categorie_new')
+            }) }}
+            data-action="hidden.bs.modal->modal-form#modalHidden"
+            class="col"
+    >
+        {{ include('button/categorieButton.html.twig') }}
+
+        {{ include('_modal.html.twig', {
+            modalTitle: 'Ajouter une catégorie',
+        }) }}
+    </div>
+
+{% endblock %}

@@ -1,4 +1,19 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+
+    {% if not form.title.vars.valid %}
+
+        {% for error in form.title.vars.errors %}
+            <div class="text-danger">
+                {{ error.message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {{ form_label(form.title,  "Catégorie : ") }}
+    <div class='mt10 input'>
+        {{ form_widget(form.title, { 'attr' : {'class': 'form-control'} }) }}
+    </div>
+    {% do  form.title.setRendered %}
+
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
